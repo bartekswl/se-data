@@ -1,0 +1,63 @@
+{%extends "layout.html"%}
+{%block content%}
+<div class = 'about'>
+  <h1>Browse all Stocks</h1>
+  <p>You can search through complete list of all S&P 500 companies</p><br>
+ </div>
+<div class='about'>
+ <p>Browse alphabetically: </p>
+<form method="GET" name="letter">
+<select id="results"  name="letter" autocomplete = "off", style="width: 10vw" required>
+  <option value="all">ALL</option>
+<option value="a">A</option>
+<option value="b">B</option>
+<option value="c">C</option>
+<option value="d">D</option>
+<option value="e">E</option>
+<option value="f">F</option>
+<option value="g">G</option>
+<option value="h">H</option>
+<option value="i">I</option>
+<option value="j">J</option>
+<option value="k">K</option>
+<option value="l">L</option>
+<option value="m">M</option>
+<option value="n">N</option>
+<option value="o">O</option>
+<option value="p">P</option>
+<option value="r">R</option>
+<option value="s">S</option>
+<option value="t">T</option>
+<option value="u">U</option>
+<option value="w">W</option>
+<option value="x">X</option>
+<option value="y">Y</option>
+<option value="z">Z</option>
+
+<input type="submit" value="Submit" style="height:3vw"> 
+</select>
+</form>
+</div>
+<div class='about'>
+ <table cellspacing="13" width="100%">
+   <tr style="font-size: 2.5vw;">
+     <th><b>Name</b></th>
+     <th><b>Ticker</b></th>
+     <th><b>Industry</b></th>
+     <th><b>Headquarters</b></th>
+     <th><b>Year founded</b></th>
+   </tr>
+  {% for row in company_list%}
+    <tr style="font-size: 1.3vw; border: 1px solid black;">
+      <th style="text-align: left;">{{ row[1]}}</th>
+      <th>{{ row[0]}}</th>
+      <th>{{ row[2]}}</th>
+      <th>{{ row[3]}}</th>
+      <th style="text-align: right;">{{ row[4]}}</th>
+    </tr>
+    <tr> </tr>
+    {% endfor %}
+ </table>
+</div>
+
+{%endblock%}

@@ -1,0 +1,9 @@
+{%extends "layout.html"%}
+{%block content%}
+<script type="text/javascript" src={{cdn_js | safe}} integrity="sha384-HjagQp6T0/7bxYTAXbLotF1MLAGWmhkY5siA1Gc/pcEgvgRPtMsRn0gQtMwGKiw1" crossorigin="anonymous"></script>
+<div class='field'>
+{{ final_message | safe}}
+{{script1 | safe}}
+{{div1 | safe}}
+</div>
+{%endblock%}

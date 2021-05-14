@@ -1,0 +1,13 @@
+{%extends "layout.html"%}
+{%block content%}
+<div class = 'about'>
+    <h1>Final step</h1>
+    <p>{{ submit_text | safe }} </p><br>
+</div>
+<div class='field'><br>
+    <form  method="GET">
+        <input title="Your email will be safe with us" placeholder="Enter your email address" type="email" name="email_name" required><br>
+      <button type="submit"> Submit </button>
+    </form>
+</div>
+{%endblock%}

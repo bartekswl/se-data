@@ -1,0 +1,11 @@
+
+<div>
+ <form method="GET" name="tickersearch">
+  <label for="namesearch"><br><b>Enter the ticker: </b></label><br><br>
+   <input type="search" id="tickersearch" name="tickersearch" placeholder="Enter S&P 500 ticker" minlength= "1" maxlength="5" style="text-transform: uppercase;" required><div class="help-tip" style="margin-left: 50vw;"><p>Stock Exchange ticker symbol- each company is identified either by full name or this special symbol. Usually consists of 1-5 letters, for example AXP for American Express</p></div>
+   {{ notick_error | safe }}
+  <button type="submit"> Submit </button>
+ </form>
+ 
+ 
+</div>

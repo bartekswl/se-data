@@ -1,0 +1,24 @@
+{%extends "layout.html"%}
+{%block content%}
+<div class = 'about'>
+  <h1>{{ firm_name | safe}}</h1>
+  <p>{{ info | safe}}</p>
+  <p>Now please select time span for which you would like to generate stock price graph:<br></p>
+</div>
+<div class='field'>
+  <form method="GET">
+    <p><b><br>Please note that maximum start date can be set to 3 days before today.</p>
+      <p>Data goes back to 2005.</p>
+    <p>Chose maximum time span of 1 year.</p></b>
+    <label for="from_date">Stock price from:</label>
+    <input type="date" id="from_date" name="from_date" min="2005-01-01" max= {{ max_start_date | safe}} {{ disable_1st | safe}} required>
+   <input type="submit" style="height:3vw" {{ disable_1st | safe }}>
+  </form>
+  <br>
+</div>
+
+
+{% if final2 is defined %}
+  {% include final2 %}
+  {% endif %}
+{%endblock%}

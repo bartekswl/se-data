@@ -1,0 +1,34 @@
+{%extends "layout.html"%}
+{%block content%}
+<div class = 'about'>
+  <h1>Search engine</h1>
+  <p>Enter details of your Stock Exchange data search</p>
+  <p>You can either search by name or stock exchange ticker.<br> Alternatively nevigate menu to browse through entire S&P 500 list. </p><br>
+</div>
+<div class="field">
+ 
+  {% if choice1 is defined %}
+  {% include choice1 %}
+  {% endif %}
+  {% if pic1 is defined %}
+  {% include pic1 %}
+  {% endif %}
+  {% if pic2 is defined %}
+  {% include pic2 %}
+  {% endif %}
+  {% if choice2 is defined %}
+  {% include choice2 %}
+  {% endif %}
+  {% if choice3 is defined %}
+  {% include choice3 %}
+  {% endif %}
+  
+</div>
+
+<br><br>
+
+
+<div class="message">
+  {{text | safe}}
+</div>
+{%endblock%}
