@@ -287,7 +287,7 @@ def submit_page():
                 
                 session['ready_from_date']=date_format(session.get('from_date'))
                 session['ready_to_date']=date_format(session.get('to_date'))
-
+                
                 return redirect(url_for('plot'))
 
 
@@ -300,6 +300,8 @@ def submit_page():
 
 # Function adapting date input into format used in datareader #
 def date_format(date):
+
+    
     date=date.split("-")
 
     for place_number, date_element in enumerate(date):
@@ -325,69 +327,69 @@ def plot():
     from bokeh.models import WheelZoomTool
     from send_plot import send_plot
 
-    try:
+    # try:
 
 # Adapting date format for datareader enquiry #
-        start=datetime.datetime(int(session.get("ready_from_date")[0]),int(session.get("ready_from_date")[1]),int(session.get("ready_from_date")[2]))
-        end=datetime.datetime(int(session.get("ready_to_date")[0]),int(session.get("ready_to_date")[1]),int(session.get("ready_to_date")[2]))
-        df=data.DataReader(name=session.get("company")[1], data_source="yahoo", start=start,end=end)
-        
+    start=datetime.datetime(int(session.get("ready_from_date")[0]),int(session.get("ready_from_date")[1]),int(session.get("ready_from_date")[2]))
+    end=datetime.datetime(int(session.get("ready_to_date")[0]),int(session.get("ready_to_date")[1]),int(session.get("ready_to_date")[2]))
+    df=data.DataReader(name=session.get("company")[1], data_source="yahoo", start=start,end=end)
+    
 
-        def inc_dec(c,o):
-            if c > o:
-                value="Increase"
-            elif c<o:
-                value="Decrease"
-            else:
-                value="Equal"
-            return value
+    def inc_dec(c,o):
+        if c > o:
+            value="Increase"
+        elif c<o:
+            value="Decrease"
+        else:
+            value="Equal"
+        return value
 
 
-        df["Status"]=[inc_dec(c,o) for c,o in zip(df.Close,df.Open)]
-        df["Height"]=abs(df.Close-df.Open)
-        df["Middle"]=(df.Open+df.Close)/2
+    df["Status"]=[inc_dec(c,o) for c,o in zip(df.Close,df.Open)]
+    df["Height"]=abs(df.Close-df.Open)
+    df["Middle"]=(df.Open+df.Close)/2
 
-        p=figure(x_axis_type='datetime', width=600, height=300, sizing_mode="scale_width", toolbar_location='right')
-        p.outline_line_width=2
-        p.outline_line_color='#444'
-        p.outline_line_alpha=.8
-        p.background_fill_color='blanchedalmond'
-        p.border_fill_color='blanchedalmond'
-        p.title.text=f"Candle chart- {session.get('company')[2]}"
-        p.grid.grid_line_alpha=0.6
-        p.title.text_font_size='22px'
-        p.title.align='center'
-        p.title.text_color="black"
-        p.xaxis.axis_label= f'DATE from {session.get("from_date")} to {session.get("to_date")}'
-        p.yaxis.axis_label= 'PRICE ($)'
-        p.yaxis.ticker.desired_num_ticks = 6
-        p.xaxis.ticker.desired_num_ticks = 15
-        p.toolbar.active_scroll=p.select_one(WheelZoomTool)
+    p=figure(x_axis_type='datetime', width=600, height=300, sizing_mode="scale_width", toolbar_location='right')
+    p.outline_line_width=2
+    p.outline_line_color='#444'
+    p.outline_line_alpha=.8
+    p.background_fill_color='blanchedalmond'
+    p.border_fill_color='blanchedalmond'
+    p.title.text=f"Candle chart- {session.get('company')[2]}"
+    p.grid.grid_line_alpha=0.6
+    p.title.text_font_size='22px'
+    p.title.align='center'
+    p.title.text_color="black"
+    p.xaxis.axis_label= f'DATE from {session.get("from_date")} to {session.get("to_date")}'
+    p.yaxis.axis_label= 'PRICE ($)'
+    p.yaxis.ticker.desired_num_ticks = 6
+    p.xaxis.ticker.desired_num_ticks = 15
+    p.toolbar.active_scroll=p.select_one(WheelZoomTool)
 
-        hours_12=12*60*60*1000
+    hours_12=12*60*60*1000
 
-        p.segment(df.index,df.High,df.index,df.Low, color="black")
-        p.rect(df.index[df.Status=="Increase"],df.Middle[df.Status=="Increase"], hours_12, df.Height[df.Status=="Increase"], fill_color="#7CFC00", 
-            line_color="black")
-        p.rect(df.index[df.Status=="Decrease"], df.Middle[df.Status=="Decrease"], hours_12, df.Height[df.Status=="Decrease"], fill_color="red", 
-            line_color="black")
-        p.line(df.index,df.Middle, line_width=1.5, color='black', line_alpha=.3, line_join='miter', legend_label="Trend")
+    p.segment(df.index,df.High,df.index,df.Low, color="black")
+    p.rect(df.index[df.Status=="Increase"],df.Middle[df.Status=="Increase"], hours_12, df.Height[df.Status=="Increase"], fill_color="#7CFC00", 
+        line_color="black")
+    p.rect(df.index[df.Status=="Decrease"], df.Middle[df.Status=="Decrease"], hours_12, df.Height[df.Status=="Decrease"], fill_color="red", 
+        line_color="black")
+    p.line(df.index,df.Middle, line_width=1.5, color='black', line_alpha=.3, line_join='miter', legend_label="Trend")
 
-        output_file("new_plot.html")
-        save(p)
-        script1, div1, =components(p)
+    output_file("new_plot.html")
+    save(p)
+    script1, div1, =components(p)
 
-        cdn_js=CDN.js_files[0]
+    cdn_js=CDN.js_files[0]
 
-        send_plot(session.get('email_name'), session.get("company")[2], session.get('from_date'), session.get('to_date'))
+    send_plot(session.get('email_name'), session.get("company")[2], session.get('from_date'), session.get('to_date'))
 
-        final_message="<p><br> Thank you! You can browse selected graph below- zoom in and out for more detailed info. You can use your mouse wheel if you hover over the graph. The graph was also sent to given e-mail address in HTML format. Navigate menu on the top for a new search.</p><br>"
-        
-        session.clear()
-        return render_template("plot.html", script1=script1, div1=div1, cdn_js=cdn_js, final_message=final_message)
+    final_message="<p><br> Thank you! You can browse selected graph below- zoom in and out for more detailed info. You can use your mouse wheel if you hover over the graph. The graph was also sent to given e-mail address in HTML format. Navigate menu on the top for a new search.</p><br>"
+    
+    session.clear()
+    return render_template("plot.html", script1=script1, div1=div1, cdn_js=cdn_js, final_message=final_message)
 
-    except:
-        return redirect(url_for('seng'))
+    # except:
+    #     return redirect(url_for('seng'))
 
 
 
